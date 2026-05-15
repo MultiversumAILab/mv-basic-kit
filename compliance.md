@@ -74,7 +74,7 @@ Gesundheitsdaten · Biometrie · Ethnische Herkunft · Politische Meinungen · R
 | Rolle | Person | Kontakt |
 |-------|--------|---------|
 | Verantwortlicher (Art. 4 Nr. 7) | Robert Grimm | datenschutz@multiversum.consulting |
-| Datenschutzbeauftragter (extern) | Marcus Sack | sack@hea-datenschutz.de |
+| Datenschutzbeauftragter (extern) | Tabea Bleckert | — |
 | Datenschutzkoordinatoren | Evelyn Hoffart, Tabea Bleckert | — |
 | Aufsichtsbehörde | HmbBfDI Hamburg | — |
 
@@ -88,7 +88,7 @@ Bei Datenpanne → **innerhalb 72h** an Aufsichtsbehörde melden:
 3. Wahrscheinliche Folgen
 4. Ergriffene/geplante Maßnahmen
 
-→ Sofortige Eskalation an datenschutz@multiversum.consulting + sack@hea-datenschutz.de
+→ Sofortige Eskalation an datenschutz@multiversum.consulting + Tabea Bleckert (DSB)
 
 ---
 
