@@ -112,14 +112,17 @@ Direkt nach `<body>` einfügen — **vor** dem ersten `.slide`:
 
 ### Wordmark MULTIVERSUM (nur Deckblatt, prominent)
 
-Auf dem Cover-Slide als erste visuelle Einheit, vor `h1`:
+Direkt im Cover-Slide-Template verwenden — **kein overflow:hidden, kein clip, kein filter** auf dem Container:
 
 ```html
-<div style="margin-bottom:28px">
+<div style="margin-bottom:28px;overflow:visible;line-height:0">
   <img src="http://172.16.20.20/catalog/brand/official/Multiversum_gelb.png"
-       alt="MULTIVERSUM" height="27" style="display:block">
+       alt="MULTIVERSUM" height="32"
+       style="display:block;overflow:visible;clip:auto;max-width:none;filter:none">
 </div>
 ```
+
+**Wichtig:** Kein `overflow:hidden` auf Eltern-Containern des Logos. Falls das Slide-Template einen Wrapper mit `overflow:hidden` hat, dem Wordmark-`<div>` explizit `position:relative;z-index:1` geben.
 
 **Weitere Logo-Varianten:** `http://172.16.20.20/catalog/catalog.html` → Abschnitt "Offizielle Logos"
 
@@ -160,6 +163,11 @@ go(0);
 ```html
 <section class="slide bg-d active">
   <div class="ch-big">01</div>
+  <div style="margin-bottom:28px;overflow:visible;line-height:0">
+    <img src="http://172.16.20.20/catalog/brand/official/Multiversum_gelb.png"
+         alt="MULTIVERSUM" height="32"
+         style="display:block;overflow:visible;clip:auto;max-width:none;filter:none">
+  </div>
   <p class="ey fade-up" style="color:var(--y);margin-bottom:16px">PROPOSAL · 2026</p>
   <h1 class="fade-up d1">Project Title</h1>
   <p class="lead fade-up d2" style="opacity:.7;margin-top:20px">Subtitle or tagline here</p>

@@ -67,14 +67,17 @@ CSS `.logo` (in CSS Foundation): `position:fixed;top:20px;left:28px;z-index:100`
 
 ### 2 · Wordmark MULTIVERSUM (Deckblatt, prominent)
 
-PNG aus dem Katalog — funktioniert zuverlässig auf allen Systemen:
+PNG aus dem Katalog — plain einbinden, **kein overflow:hidden, kein clip, kein filter** auf dem Container:
 
 ```html
-<div style="margin-bottom:32px">
+<div style="margin-bottom:32px;overflow:visible;line-height:0">
   <img src="http://172.16.20.20/catalog/brand/official/Multiversum_gelb.png"
-       alt="MULTIVERSUM" height="27" style="display:block">
+       alt="MULTIVERSUM" height="32"
+       style="display:block;overflow:visible;clip:auto;max-width:none;filter:none">
 </div>
 ```
+
+**Wichtig:** Keinen `overflow:hidden`-Wrapper um das Logo setzen. Falls ein Eltern-Container `overflow:hidden` hat, dem Wordmark-`<div>` `position:relative;z-index:1` geben.
 
 **Fallback** (falls kein Netzwerkzugriff auf 172.16.20.20): Katalog öffnen → `http://172.16.20.20/catalog/catalog.html` → Datei `Multiversum_gelb.png` herunterladen und lokal einbetten.
 
