@@ -116,7 +116,7 @@ Direkt im Cover-Slide-Template verwenden — **kein overflow:hidden, kein clip, 
 
 ```html
 <div style="margin-bottom:28px;overflow:visible;line-height:0">
-  <img src="http://172.16.20.20/catalog/brand/official/Multiversum_gelb.png"
+  <img src="assets/Multiversum_gelb.png"
        alt="MULTIVERSUM" height="32"
        style="display:block;overflow:visible;clip:auto;max-width:none;filter:none">
 </div>
@@ -164,7 +164,7 @@ go(0);
 <section class="slide bg-d active">
   <div class="ch-big">01</div>
   <div style="margin-bottom:28px;overflow:visible;line-height:0">
-    <img src="http://172.16.20.20/catalog/brand/official/Multiversum_gelb.png"
+    <img src="assets/Multiversum_gelb.png"
          alt="MULTIVERSUM" height="32"
          style="display:block;overflow:visible;clip:auto;max-width:none;filter:none">
   </div>
