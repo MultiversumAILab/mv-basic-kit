@@ -87,18 +87,55 @@ Direkte Datei-URLs: `http://172.16.20.20/catalog/brand/official/<dateiname>`
 
 Falls ein Logo fehlt oder eine andere Variante gebraucht wird → Katalog öffnen, Datei finden, URL direkt einbetten. Der Katalog wird laufend aktualisiert.
 
-- **DOCX top-right header:** `MV_ohne_slogan.svg` oder `Multiversum_gelb.png` — siehe `docx-rules.md`
+- **DOCX top-right header:** `assets/Logo_MV_MVW.png` — M Symbol + Wordmark Kombination (schwarz, eingebettet)
+
+## DOCX Document Generation — Quick Guide
+
+**For any DOCX request:** Use the bundled generator. Never build a document from scratch.
+
+```bash
+python3 ~/.claude/skills/multiversum-brand/docx-generator.py \
+  --out "YYYY-MM-DD_[Kunde]_[Typ]_v1.docx" \
+  --title "Titel" --subtitle "Untertitel" \
+  --classification intern --responsible "Name"
+```
+
+**What gets generated automatically:**
+- Logo_MV_MVW.png top-right im Header (eingebettet, kein Netzwerk)
+- Dokumentensteckbrief mit 7 Word Content Controls (ausfüllbar)
+- Änderungshistorie-Tabelle
+- Natives Word-Inhaltsverzeichnis (Heading 1–3, F9 zum Aktualisieren)
+- Alle Stile vordefiniert: Heading 1–4, MV Body, MV Label, MV Value, Caption, TOC 1–3
+- Footer: Multiversum GmbH · Hamburg | [KLASSIFIZIERUNG] | Seite/Gesamt
+
+**After generation:** User opens in Word → F9 → TOC wird aktualisiert → Content Controls anklicken und ausfüllen.
+
+**Python module import** (for programmatic use):
+```python
+import sys; sys.path.insert(0, str(Path.home() / ".claude/skills/multiversum-brand"))
+from docx_generator import create_mv_document
+doc = create_mv_document(title="Titel", classification="intern")
+doc.add_heading("1. Einleitung", level=1)
+doc.add_paragraph("Text.")
+doc.save("output.docx")
+```
+
+Full reference: `docx-rules.md`
 
 ## Supporting References
 
 - `ci.md` — Full CI specification (typography, spacing, all components)
 - `ppt-system.md` — HTML slide CSS framework + component library
-- `docx-rules.md` — DOCX formatting rules, header/footer, logo placement
+- `docx-rules.md` — DOCX generator docs, all styles, logo placement, callout patterns
+- `docx-generator.py` — Python generator script (bundled, no install needed beyond python-docx)
 - `compliance.md` — DSGVO + TISAX data classification + mandatory checklists
+- `assets/Logo_MV_MVW.png` — M Symbol + Wordmark Kombination (1200×238px, schwarz, eingebettet)
 
 ## Workflow
 
 1. **Classify the content** → run compliance check (see `compliance.md`)
-2. **Choose format** → PPT/HTML (see `ppt-system.md`) or DOCX (see `docx-rules.md`)
+2. **Choose format:**
+   - PPT/HTML → see `ppt-system.md`
+   - DOCX → run `docx-generator.py` (see above + `docx-rules.md`)
 3. **Apply CI** → use tokens from this file and `ci.md`
-4. **Verify** → correct logo placement, color usage, data classification marked
+4. **Verify** → logo top-right sichtbar, Steckbrief ausgefüllt, TOC aktualisiert (F9), Klassifizierung im Footer

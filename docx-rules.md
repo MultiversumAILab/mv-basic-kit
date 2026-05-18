@@ -1,107 +1,190 @@
 # Multiversum DOCX — Document Rules
 
-## Mandatory Elements (Every DOCX)
+## Quick Start
 
-### Header — Top Right Logo
-Every Multiversum DOCX must have the logo in the **top-right corner of the header**.
+```bash
+# Generate a CI-compliant DOCX in one command:
+python3 ~/.claude/skills/multiversum-brand/docx-generator.py \
+  --out "Mein_Dokument.docx" \
+  --title "Dokumententitel" \
+  --subtitle "Untertitel / Abteilung" \
+  --classification intern \
+  --valid-from "01.06.2026" \
+  --responsible "Name" \
+  --approved-by "Name"
 
-**Logo file to use:**
-- Primary: `/Users/ai_lab_team/Documents/Bilder/Logos/MV ohne slogan.svg`
-- Fallback PNG: `/Users/ai_lab_team/Documents/Bilder/Logos/Multiversum gelb.png`
-- Dark docs (printed): `/Users/ai_lab_team/Documents/Bilder/Logos/Multiversum + Slogan black.svg`
-
-**Header setup:**
-- Header height: ~1.5cm
-- Logo position: right-aligned, top-right corner
-- Logo height: 1cm (maintain aspect ratio)
-- Background: white (logo is yellow on white = visible as black/dark shape; use dark variant for print)
-- Left side of header: blank or document title in light gray (rgba(0,0,0,.4))
-
-**When generating via python-docx or similar:**
-```python
-from docx.shared import Cm, Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-
-# Add header with logo
-header = doc.sections[0].header
-header_para = header.paragraphs[0]
-header_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-run = header_para.add_run()
-run.add_picture('path/to/Multiversum gelb.png', height=Cm(1))
+# With sample content sections (useful as starter template):
+python3 ~/.claude/skills/multiversum-brand/docx-generator.py --out output.docx --title "Titel" --sample
 ```
 
-### Footer
-- Left: `Multiversum GmbH · Hamburg` in 9pt, color `#A4A7AB`
-- Center: empty
-- Right: Page number `{PAGE} / {NUMPAGES}` in 9pt, color `#A4A7AB`
+Or use as Python module:
+```python
+import sys
+sys.path.insert(0, str(Path.home() / ".claude/skills/multiversum-brand"))
+from docx_generator import create_mv_document
+
+doc = create_mv_document(
+    title="ISMS Richtlinie — Zugangskontrolle",
+    classification="intern",
+    responsible="Max Mustermann",
+)
+doc.add_heading("1. Einleitung", level=1)
+doc.add_paragraph("Ihr Inhalt hier.")
+doc.save("output.docx")
+```
+
+## What the Generator Creates
+
+Every generated DOCX contains:
+
+1. **Header** — Logo_MV_MVW.png top-right (eingebettet, kein Netzwerk nötig), Dokumententitel links in grau, Trennlinie unten
+2. **Titelbereich** — Titel 24pt fett, optionaler Untertitel 14pt grau, Teal-Trennbalken
+3. **Dokumentensteckbrief** — 7 ausfüllbare Felder mit Word Content Controls (SDT), Klassifizierung, Verantwortlicher etc.
+4. **Änderungshistorie** — vordefinierte Tabelle, erweiterbar per `changelog_entries`
+5. **Inhaltsverzeichnis** — natives Word TOC-Feld (F9 zum Aktualisieren), TOC-Stile CI-konform
+6. **Vordefinierte Stile** — Heading 1–4, MV Body, MV Label, MV Value, Caption, TOC 1–3
+7. **Footer** — Multiversum GmbH · Hamburg | [KLASSIFIZIERUNG] | Seite / Gesamtseiten
+
+## Logo
+
+**Datei:** `~/.claude/skills/multiversum-brand/assets/Logo_MV_MVW.png`
+- M Symbol + Wordmark Kombination (1200×238px, RGBA, schwarze Version)
+- Eingebettet im Skill — kein Netzwerkzugriff zur Laufzeit
+- Quelle: `http://172.16.20.20/catalog/brand/official/Logo_MV_MVW.png`
+- Im Header: 0.9cm Höhe, rechts ausgerichtet
+
+**Andere Logo-Varianten** (für spezielle Fälle):
+- `assets/Multiversum_gelb.png` — gelber Wordmark (für dunkle Hintergründe / PPT)
+- `assets/Logo_ohne_Hintergrund.svg` — SVG ohne Hintergrund (für Web)
+- Vollständiger Katalog: `http://172.16.20.20/catalog/catalog.html`
 
 ## Typography
 
-| Style | Font | Size | Weight | Color |
-|-------|------|------|--------|-------|
-| Document Title | Arial | 24pt | Bold (700) | `#333333` |
-| Heading 1 | Arial | 18pt | Bold (700) | `#333333` |
-| Heading 2 | Arial | 14pt | Bold (700) | `#333333` |
-| Heading 3 | Arial | 12pt | SemiBold (600) | `#333333` |
-| Body Text | Arial | 11pt | Regular (400) | `#333333` |
-| Caption | Arial | 9pt | Regular (400) | `#5D6269` |
-| Footer/Header | Arial | 9pt | Regular (400) | `#A4A7AB` |
+| Style | Font | Größe | Gewicht | Farbe |
+|-------|------|-------|---------|-------|
+| Dokumententitel | Arial | 24pt | Bold | `#333333` |
+| Heading 1 | Arial | 18pt | Bold | `#333333` + Teal-Unterlinie |
+| Heading 2 | Arial | 14pt | Bold | `#333333` |
+| Heading 3 | Arial | 12pt | Bold | `#5D6269` |
+| Heading 4 | Arial | 11pt | Bold Italic | `#5D6269` |
+| Body Text / Normal | Arial | 11pt | Regular | `#333333` |
+| MV Label (Steckbrief) | Arial | 10pt | Bold | `#006DB0` |
+| MV Value (Steckbrief) | Arial | 10pt | Regular | `#333333` |
+| Caption | Arial | 9pt | Italic | `#5D6269` |
+| Footer / Header | Arial | 9pt | Regular | `#A4A7AB` |
+| TOC 1 | Arial | 10pt | Bold | `#333333` |
+| TOC 2 | Arial | 9pt | Regular | `#333333` |
+| TOC 3 | Arial | 8pt | Regular | `#333333` |
 
 ## Color Usage in DOCX
 
-| Element | Color | Notes |
-|---------|-------|-------|
-| H1 underline accent | `#F26B43` | Bottom border on H1 paragraphs (optional) |
-| Highlight/callout box | `#F2FF62` background, `#333333` text | Use sparingly — 1 per page max |
-| Table header row | `#333333` background, `#FFFFFF` text | |
-| Table alternating rows | `#F5F5F3` / `#FFFFFF` | |
-| Divider lines | `#E1E2E3` | 0.5pt, light gray |
-| Important text | `#F26B43` | Bold only, never entire paragraphs |
+| Element | Farbe | Hinweis |
+|---------|-------|---------|
+| Primärtext | `#333333` | Alle Fließtexte |
+| Überschriften-Akzent | `#3C6E89` (Teal) | H1-Unterlinie, Trennbalken |
+| Label-Farbe | `#006DB0` (Blau) | Steckbrief-Labels, Abschnittstitel |
+| Callout-Highlight | `#F2FF62` Hintergrund | Sparsam — max. 1× pro Seite |
+| Tabellen-Header | `#333333` Bg, `#FFFFFF` Text | Alle formalen Tabellen |
+| Tabellen-Alt-Zeilen | `#F5F5F3` / `#FFFFFF` | Alternierend |
+| Trennlinien | `#E1E2E3` | 0.5pt, Hellgrau |
+| Muted / Footer | `#A4A7AB` | Footer, Captions, Metadaten |
 
 ## Page Layout
 
-- **Page size:** A4 (210×297mm)
-- **Margins:** Top 2.5cm, Bottom 2.5cm, Left 2.5cm, Right 2.5cm
-- **Header height:** 1.5cm
-- **Footer height:** 1.2cm
-- **Line spacing:** 1.15 (headings), 1.5 (body)
-- **Paragraph spacing after:** 6pt (body), 12pt (headings)
+- **Format:** DIN A4 (21,0 × 29,7 cm)
+- **Ränder:** alle 2,5 cm
+- **Kopfzeilenabstand:** 1,25 cm
+- **Fußzeilenabstand:** 1,25 cm
+- **Zeilenabstand:** 1.15× (Überschriften), 1.5× (Fließtext)
+- **Absatzabstand nach:** 6pt (Text), 12pt (Überschriften)
 
-## Callout Box Pattern
+## Dokumentensteckbrief — Felder
 
-For important information boxes (like takeaways in PPT):
+| Feld | Content Control Tag | Verwendung |
+|------|---------------------|------------|
+| Dateiname | `steckbrief_filename` | Entspricht dem Dokumententitel |
+| Klassifizierung | `steckbrief_class` | öffentlich / intern / vertraulich / streng vertraulich |
+| Gültig ab | `steckbrief_valid` | Datum der Gültigkeit |
+| Dokumentenverantwortlich | `steckbrief_responsible` | Name der verantwortlichen Person |
+| Freigegeben von | `steckbrief_approved_by` | Name des Freigebenden |
+| Freigegeben am | `steckbrief_approved_on` | Freigabedatum |
+| Ablageort | `steckbrief_storage` | Pfad / SharePoint / DMS |
+
+Content Controls sind echte Word-SDT-Felder — in Word direkt anklicken und ausfüllen.
+
+## Änderungshistorie erweitern
+
+```python
+from docx_generator import create_mv_document
+
+doc = create_mv_document(
+    title="Mein Dokument",
+    changelog_entries=[
+        {"version": "0.1", "date": "15.05.2026", "chapter": "alle",
+         "description": "Erstellung", "reviewed_by": "M. Mustermann"},
+        {"version": "1.0", "date": "01.06.2026", "chapter": "alle",
+         "description": "Freigabe nach Review", "reviewed_by": "F. Monti"},
+    ]
+)
+doc.save("output.docx")
 ```
-Left border: 4pt, color #F26B43 (orange) or #F2FF62 (yellow)
-Background: light tint of border color (10% opacity)
-Padding: 12pt all sides
-Font: Italic, 11pt, color matching border
+
+## Inhaltsverzeichnis
+
+Das TOC ist ein natives Word-Feld (`TOC \o "1-3" \h \z \u`):
+- Erfasst automatisch Heading 1–3
+- **F9** in Word zum Aktualisieren
+- Beim ersten Öffnen fragt Word ggf. nach Aktualisierung → "Gesamtes Inhaltsverzeichnis aktualisieren"
+
+## Callout Box (manuell hinzufügen)
+
+```python
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+from docx.shared import Pt
+
+def add_callout(doc, text):
+    para = doc.add_paragraph()
+    pPr = para._p.get_or_add_pPr()
+    pBdr = OxmlElement("w:pBdr")
+    left = OxmlElement("w:left")
+    left.set(qn("w:val"), "single")
+    left.set(qn("w:sz"), "24")
+    left.set(qn("w:space"), "12")
+    left.set(qn("w:color"), "3C6E89")
+    pBdr.append(left)
+    pPr.append(pBdr)
+    run = para.add_run(text)
+    run.font.name = "Arial"
+    run.font.size = Pt(11)
+    run.font.italic = True
 ```
 
-## Cover Page Pattern (for formal proposals/reports)
+## Compliance Watermark (Vertraulich)
+
+Für Dokumente der Klassifizierung `vertraulich` oder `streng vertraulich`:
+- Wasserzeichen: `VERTRAULICH` diagonal, Schriftgröße 60pt, Farbe `rgba(242,107,67,0.15)`
+- TISAX-Marker in Footer-Mitte: `[VERTRAULICH]` / `[INTERN]`
+- Der Generator setzt den Footer-Marker automatisch anhand der `--classification`
+
+## Dateinamen-Konvention
 
 ```
-Background: #333333 (full page, dark)
-Top-left: Multiversum M logo (yellow version), 3cm × 3cm
-Center-left: Document title in white, 28pt bold
-Below title: Subtitle/client name in rgba(255,255,255,.6), 16pt light
-Bottom-left: Date + "Multiversum GmbH" in 11pt, opacity .5
-Bottom-right: Multiversum wordmark in yellow
+YYYY-MM-DD_[Projekt/Kunde]_[Dokumenttyp]_v[N].docx
+
+Beispiele:
+2026-06-01_Intern_ISMS-Zugangskontrolle_v1.docx
+2026-06-01_Mustermann-GmbH_Angebot_v2.docx
+2026-06-01_Intern_DSGVO-Verfahrensverzeichnis_v1.docx
 ```
-
-## Compliance Watermark (Confidential Docs)
-
-For CONFIDENTIAL or INTERNAL classified documents:
-- Add watermark text: `VERTRAULICH` (German) or `CONFIDENTIAL`
-- Color: `rgba(242,107,67,.15)` (light orange, 15% opacity)
-- Diagonal, centered, 60pt Arial Bold
-- TISAX classification marker in footer-right: `[VERTRAULICH]` or `[INTERN]`
 
 ## Quick Generation Checklist
 
-- [ ] Logo in header top-right (correct variant for print/screen)
-- [ ] Footer with company name + page number
-- [ ] Font is Arial throughout (no exceptions)
-- [ ] Document title uses H1 style
-- [ ] Table headers use dark bg (#333333) + white text
-- [ ] TISAX classification marked if document contains sensitive data
-- [ ] File named: `YYYY-MM-DD_[Client]_[DocumentType]_v[N].docx`
+- [ ] `python3 docx-generator.py` ausgeführt
+- [ ] Logo im Header top-right sichtbar (Logo_MV_MVW.png)
+- [ ] Dokumentensteckbrief ausgefüllt (alle 7 Felder)
+- [ ] Klassifizierung korrekt gesetzt + im Footer sichtbar
+- [ ] Inhaltsverzeichnis aktualisiert (F9 in Word)
+- [ ] Schrift Arial durchgehend (kein Times New Roman / Calibri)
+- [ ] Dateiname nach Konvention `YYYY-MM-DD_..._v[N].docx`
+- [ ] TISAX-Check: enthält das Dokument personenbezogene Daten? → compliance.md
