@@ -55,3 +55,20 @@ cp ~/.claude/skills/multiversum-brand/CLAUDE-template.md ./CLAUDE.md
 > „Erstelle eine Multiversum-Präsentation für [Kunde] über [Thema]"  
 > „Erstelle ein Word-Dokument für [Zweck] in Multiversum CI"  
 > „Prüfe dieses Projekt auf DSGVO/TISAX-Konformität"
+
+---
+
+## LAN-Editing Setup (Mac Mini + Kolleg:innen)
+
+Wenn Präsentationen von mehreren Codex-Consoles im LAN bearbeitet werden sollen:
+
+```bash
+# auf dem Mac Mini (Host)
+bash scripts/setup_lan_repo_and_deploy.sh
+
+# auf der Kolleg:innen-Konsole (Client)
+bash scripts/connect_lan_client.sh
+```
+
+Vollständige Anleitung inkl. Variablen und Security-Hinweis:
+- `lan-collab.md`

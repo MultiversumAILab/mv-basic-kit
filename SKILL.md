@@ -130,6 +130,9 @@ Full reference: `docx-rules.md`
 - `docx-generator.py` — Python generator script (bundled, no install needed beyond python-docx)
 - `compliance.md` — DSGVO + TISAX data classification + mandatory checklists
 - `assets/Logo_MV_MVW.png` — M Symbol + Wordmark Kombination (1200×238px, schwarz, eingebettet)
+- `lan-collab.md` — LAN collaboration workflow (Mac Mini host + colleague clients)
+- `scripts/setup_lan_repo_and_deploy.sh` — host setup for Git + auto deploy to NGINX path
+- `scripts/connect_lan_client.sh` — client-side connect/clone/pull bootstrap
 
 ## Workflow
 
@@ -139,3 +142,15 @@ Full reference: `docx-rules.md`
    - DOCX → run `docx-generator.py` (see above + `docx-rules.md`)
 3. **Apply CI** → use tokens from this file and `ci.md`
 4. **Verify** → logo top-right sichtbar, Steckbrief ausgefüllt, TOC aktualisiert (F9), Klassifizierung im Footer
+
+## LAN Editing Mode (Mac Mini)
+
+If users ask for collaborative editing from other Codex consoles in local network:
+
+1. Run host bootstrap:
+   - `bash scripts/setup_lan_repo_and_deploy.sh`
+2. Share client bootstrap with colleagues:
+   - `bash scripts/connect_lan_client.sh`
+3. Confirm two endpoints:
+   - Git remote: `git://<host-ip>:9418/<repo>.git`
+   - Live URL: `http://<host-ip>/<path>/`

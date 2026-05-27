@@ -71,6 +71,17 @@ Font: Arial, Helvetica Neue, sans-serif
 - Claude Code CLI oder Desktop-App
 - Logo-Dateien lokal verfügbar (intern: `/Users/[USER]/Documents/Bilder/Logos/`)
 
+## LAN Collaboration (Mac Mini)
+
+Für kollaboratives Editieren von HTML-Präsentationen im lokalen Netzwerk:
+
+1. Host (Mac Mini) richtet Remote + Auto-Deploy ein:
+   - `bash scripts/setup_lan_repo_and_deploy.sh`
+2. Kolleg:innen verbinden ihre lokale Codex-Console:
+   - `bash scripts/connect_lan_client.sh`
+
+Details und Variablen: `lan-collab.md`
+
 ## Lizenz
 
 Intern — Multiversum GmbH. Nicht für externe Weitergabe.
