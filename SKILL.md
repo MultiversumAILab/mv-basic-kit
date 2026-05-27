@@ -9,6 +9,25 @@ description: Use when creating presentations, proposals, pitch decks, reports, o
 
 Unified reference for creating Multiversum-CI-compliant content. Every deliverable — PPT/HTML presentation, DOCX report, or proposal — follows this system. Covers visual CI, slide generation, DOCX templates, and mandatory compliance checks.
 
+## Quick Start
+
+### Standard Skill Use
+
+1. Classify first via `compliance.md`
+2. Build PPT/HTML with `ppt-system.md` and CI tokens from this file
+3. Build DOCX with `docx-generator.py` and `docx-rules.md`
+
+### LAN Editing (Mac Mini)
+
+1. Host setup (one-time on Mac Mini):
+   - `bash scripts/setup_lan_repo_and_deploy.sh`
+2. Client setup (each colleague):
+   - `bash scripts/connect_lan_client.sh`
+3. Day-to-day:
+   - `git add . && git commit -m "Update" && git push origin main`
+
+Details and variables: `lan-collab.md`
+
 ## When to Use
 
 - Creating a presentation, pitch deck, or proposal
