@@ -26,6 +26,10 @@ Unified reference for creating Multiversum-CI-compliant content. Every deliverab
 3. Day-to-day:
    - `git add . && git commit -m "Update" && git push origin main`
 
+Deployment convention:
+- Decks: `/ppt/<user>/<repo>/`
+- Overview: `/ppt/index.html`
+
 Details and variables: `lan-collab.md`
 
 ## When to Use
@@ -172,4 +176,4 @@ If users ask for collaborative editing from other Codex consoles in local networ
    - `bash scripts/connect_lan_client.sh`
 3. Confirm two endpoints:
    - Git remote: `git://<host-ip>:9418/<repo>.git`
-   - Live URL: `http://<host-ip>/<path>/`
+   - PPT index: `http://<host-ip>/ppt/`
