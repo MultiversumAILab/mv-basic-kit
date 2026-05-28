@@ -27,7 +27,7 @@ Unified reference for creating Multiversum-CI-compliant content. Every deliverab
    - `git add . && git commit -m "Update" && git push origin main`
 
 Deployment convention:
-- Decks: `/ppt/<user>/<repo>/`
+- Decks: `/ppt/<projekt>/`
 - Overview: `/ppt/index.html`
 
 Details and variables: `lan-collab.md`
@@ -174,6 +174,7 @@ If users ask for collaborative editing from other Codex consoles in local networ
    - `bash scripts/setup_lan_repo_and_deploy.sh`
 2. Share client bootstrap with colleagues:
    - `bash scripts/connect_lan_client.sh`
+   - script asks: `Neues Projekt` oder `Bestehendes Projekt`
 3. Confirm two endpoints:
    - Git remote: `git://<host-ip>:9418/<repo>.git`
    - PPT index: `http://<host-ip>/ppt/`

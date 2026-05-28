@@ -8,6 +8,7 @@ MV_GIT_ROOT="${MV_GIT_ROOT:-$HOME/shared-git}"
 MV_WORKTREE_DIR="${MV_WORKTREE_DIR:-$HOME/Documents/wlalq01-presentation}"
 MV_SOURCE_DIR="${MV_SOURCE_DIR:-$HOME/2026-05-15_Internationales-Industrieunternehmen_Angebot_VERTRAULICH_v1}"
 MV_NGINX_HTML_ROOT="${MV_NGINX_HTML_ROOT:-$HOME/.docker/cagent/working_directories/docker-gordon-v4/8336e58d-392e-4e8e-afa9-cf6338e421fb/default/nginx_html}"
+MV_DEFAULT_PROJECT="${MV_DEFAULT_PROJECT:-wlalq01}"
 
 MV_BARE_REPO="$MV_GIT_ROOT/$MV_REPO_NAME"
 MV_PPT_ROOT="$MV_NGINX_HTML_ROOT/ppt"
@@ -29,12 +30,35 @@ if [ ! -d "$MV_BARE_REPO" ]; then
 fi
 git -C "$MV_BARE_REPO" symbolic-ref HEAD refs/heads/main
 
-echo "[3/8] Sync source deck into worktree"
+echo "[3/8] Ensure project-first layout in worktree"
+mkdir -p "$MV_WORKTREE_DIR/ppt/$MV_DEFAULT_PROJECT"
 if [ -d "$MV_SOURCE_DIR" ]; then
-  rsync -a --delete --exclude ".git" "$MV_SOURCE_DIR"/ "$MV_WORKTREE_DIR"/
+  rsync -a --delete --exclude ".git" "$MV_SOURCE_DIR"/ "$MV_WORKTREE_DIR/ppt/$MV_DEFAULT_PROJECT"/
 else
   echo "WARN: MV_SOURCE_DIR not found: $MV_SOURCE_DIR"
-  echo "WARN: continuing with current MV_WORKTREE_DIR contents."
+  echo "WARN: create placeholder project under ppt/$MV_DEFAULT_PROJECT."
+fi
+
+if [ ! -f "$MV_WORKTREE_DIR/ppt/$MV_DEFAULT_PROJECT/index.html" ]; then
+  cat > "$MV_WORKTREE_DIR/ppt/$MV_DEFAULT_PROJECT/index.html" <<'EOF'
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neues PPT-Projekt</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
+    h1 { margin-bottom: 12px; }
+    p { max-width: 760px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>Neues PPT-Projekt</h1>
+  <p>Dieses Projekt wurde als Platzhalter angelegt. Ersetze diese Datei durch deine Präsentation.</p>
+</body>
+</html>
+EOF
 fi
 
 echo "[4/8] Initialize worktree and push initial state"
@@ -75,15 +99,13 @@ trap 'rm -f "\$TMP_FILE" "\$ENTRIES_FILE"' EXIT
 
 mkdir -p "\$PPT_ROOT"
 
-find "\$PPT_ROOT" -mindepth 3 -maxdepth 3 -type f -name index.html | while IFS= read -r file; do
+find "\$PPT_ROOT" -mindepth 2 -maxdepth 2 -type f -name index.html | while IFS= read -r file; do
   rel="\${file#\$PPT_ROOT/}"
-  user="\${rel%%/*}"
-  rest="\${rel#*/}"
-  project="\${rest%%/*}"
-  url="/ppt/\$user/\$project/"
+  project="\${rel%%/*}"
+  url="/ppt/\$project/"
   mtime="\$(stat -f '%Sm' -t '%Y-%m-%d %H:%M' "\$file" 2>/dev/null || date '+%Y-%m-%d %H:%M')"
-  printf '%s|%s|%s|%s\\n' "\$user" "\$project" "\$mtime" "\$url"
-done | sort -t '|' -k1,1 -k2,2 > "\$ENTRIES_FILE"
+  printf '%s|%s|%s\\n' "\$project" "\$mtime" "\$url"
+done | sort -t '|' -k1,1 > "\$ENTRIES_FILE"
 
 cat > "\$TMP_FILE" <<'HTML_TOP'
 <!DOCTYPE html>
@@ -257,16 +279,16 @@ cat > "\$TMP_FILE" <<'HTML_TOP'
 HTML_TOP
 
 if [ -s "\$ENTRIES_FILE" ]; then
-  while IFS='|' read -r user project mtime url; do
+  while IFS='|' read -r project mtime url; do
     cat >> "\$TMP_FILE" <<HTML_CARD
       <a href="\$url" class="service-card">
         <div class="card-top">
           <div class="card-icon">&#128196;</div>
           <h2>\$project</h2>
         </div>
-        <p>Collab-Deployment unter <strong>/ppt/\$user/\$project/</strong></p>
+        <p>Collab-Deployment unter <strong>/ppt/\$project/</strong></p>
         <div class="meta">
-          <span>User: \$user</span>
+          <span>Shared Project</span>
           <span>Updated: \$mtime</span>
         </div>
         <span class="card-url">\$url</span>
@@ -307,32 +329,21 @@ REPO_NAME="\$(basename \"\$(pwd)\" .git)"
 TMP_DIR="\$(mktemp -d /tmp/\${REPO_NAME}-deploy.XXXXXX)"
 trap 'rm -rf "\$TMP_DIR"' EXIT
 
-LAST_NEWREV=""
-while read -r oldrev newrev refname; do
-  LAST_NEWREV="\$newrev"
-done
-
-AUTHOR_EMAIL=""
-if [ -n "\$LAST_NEWREV" ] && [ "\$LAST_NEWREV" != "0000000000000000000000000000000000000000" ]; then
-  AUTHOR_EMAIL="\$(git --git-dir=\"\$(pwd)\" show -s --format='%ae' \"\$LAST_NEWREV\" 2>/dev/null || true)"
-fi
-
-if [ -n "\$AUTHOR_EMAIL" ]; then
-  USER_FOLDER="\$(printf '%s' \"\$AUTHOR_EMAIL\" | awk -F'@' '{print \$1}' | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9._-')"
-else
-  USER_FOLDER="unknown"
-fi
-[ -n "\$USER_FOLDER" ] || USER_FOLDER="unknown"
-
-DEPLOY_DIR="\$PPT_ROOT/\$USER_FOLDER/\$REPO_NAME"
-mkdir -p "\$DEPLOY_DIR"
-
 git --git-dir=\"\$(pwd)\" archive main | tar -x -C "\$TMP_DIR"
-rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r "\$TMP_DIR"/ "\$DEPLOY_DIR"/
-chmod -R u+rwX,go+rX "\$PPT_ROOT/\$USER_FOLDER"
+
+if [ -d "\$TMP_DIR/ppt" ]; then
+  mkdir -p "\$PPT_ROOT"
+  rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r "\$TMP_DIR/ppt/"/ "\$PPT_ROOT"/
+else
+  LEGACY_DIR="\$PPT_ROOT/\$REPO_NAME"
+  mkdir -p "\$LEGACY_DIR"
+  rsync -a --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r "\$TMP_DIR"/ "\$LEGACY_DIR"/
+fi
+
+chmod -R u+rwX,go+rX "\$PPT_ROOT"
 
 NGINX_HTML_ROOT="\$NGINX_HTML_ROOT" "$MV_PPT_INDEX_RENDERER"
-echo "[\$REPO_NAME] deployed to \$DEPLOY_DIR"
+echo "[\$REPO_NAME] deployed to \$PPT_ROOT"
 EOF
 chmod +x "$MV_BARE_REPO/hooks/post-receive"
 
@@ -390,5 +401,4 @@ curl -fsS -I "http://127.0.0.1/ppt/" >/dev/null
 echo "OK"
 echo "LAN remote: git://$MV_HOST_LAN_IP:9418/$MV_REPO_NAME"
 echo "PPT index:  http://$MV_HOST_LAN_IP/ppt/"
-echo "Live deck path after push: /ppt/<user>/<repo>/"
-
+echo "Live deck path after push: /ppt/<project>/"

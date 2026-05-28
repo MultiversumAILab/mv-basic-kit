@@ -70,5 +70,9 @@ bash scripts/setup_lan_repo_and_deploy.sh
 bash scripts/connect_lan_client.sh
 ```
 
+Der Client-Command fragt anschließend:
+- Neues Projekt anlegen (`/ppt/<projekt>/`)
+- oder bestehendes Projekt bearbeiten (gemeinsamer Ordner für mehrere Personen)
+
 Vollständige Anleitung inkl. Variablen und Security-Hinweis:
 - `lan-collab.md`

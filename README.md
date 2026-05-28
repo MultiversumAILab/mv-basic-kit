@@ -79,6 +79,7 @@ Für kollaboratives Editieren von HTML-Präsentationen im lokalen Netzwerk:
    - `bash scripts/setup_lan_repo_and_deploy.sh`
 2. Kolleg:innen verbinden ihre lokale Codex-Console:
    - `bash scripts/connect_lan_client.sh`
+   - interaktive Auswahl: neues Projekt oder bestehendes Projekt
 
 Details und Variablen: `lan-collab.md`
 

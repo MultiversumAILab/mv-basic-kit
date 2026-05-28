@@ -5,17 +5,18 @@ This guide adds a reusable Git-based collaboration flow for presentation editing
 ## Goal
 
 - Colleagues can edit from another Codex console in LAN.
-- Pushes deploy automatically into `/ppt/<user>/<repo>/`.
+- Pushes deploy automatically into `/ppt/<projekt>/`.
 - `/ppt/index.html` is regenerated on every push as a live overview.
+- Beim Client-Start wird abgefragt: **Neues Projekt** oder **bestehendes Projekt bearbeiten**.
 - Setup is repeatable and can be reused in `mv-basic-kit`.
 
 ## Architecture
 
 1. Mac Mini hosts a bare Git repository (`shared-git/<name>.git`)
-2. `post-receive` hook deploys `main` branch to `ppt/<user>/<repo>`
+2. `post-receive` hook deploys the repository's `ppt/` folder to NGINX `/ppt/`
 3. `git daemon` exposes repository in LAN (`git://<host-ip>:9418/<name>.git`)
 4. Hook regenerates `/ppt/index.html` overview
-5. Colleagues clone, edit, commit, push
+5. Colleagues clone, choose project mode, edit, commit, push
 
 ## Host Setup (Mac Mini)
 
@@ -33,6 +34,7 @@ MV_REPO_NAME=wlalq01.git
 MV_WORKTREE_DIR="$HOME/Documents/wlalq01-presentation"
 MV_SOURCE_DIR="$HOME/2026-05-15_Internationales-Industrieunternehmen_Angebot_VERTRAULICH_v1"
 MV_NGINX_HTML_ROOT="$HOME/.docker/.../nginx_html"
+MV_DEFAULT_PROJECT=wlalq01
 ```
 
 ## Client Setup (Another Codex console in LAN)
@@ -51,7 +53,19 @@ MV_REPO_NAME=wlalq01.git
 MV_CLIENT_DIR="$HOME/projects/wlalq01"
 MV_GIT_USER_NAME="Firstname Lastname"
 MV_GIT_USER_EMAIL="firstname.lastname@multiversum.consulting"
+MV_PROJECT_MODE=new|existing
+MV_PROJECT_NAME=my-project
+MV_NONINTERACTIVE=1
 ```
+
+## Project Choice Flow
+
+When running `connect_lan_client.sh` interactively, users get:
+
+1. `Neues Projekt anlegen (/ppt/<name>/)`  
+2. `Bestehendes Projekt bearbeiten`
+
+This prevents accidental parallel copies of the same presentation.
 
 ## Daily Editing Flow
 
@@ -69,7 +83,7 @@ Deployment is automatic after push.
 Final URL pattern:
 
 ```text
-http://<host-ip>/ppt/<user>/<repo>/
+http://<host-ip>/ppt/<projekt>/
 ```
 
 ## Quick Verification
