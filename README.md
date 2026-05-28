@@ -66,6 +66,13 @@ Font: Arial, Helvetica Neue, sans-serif
 
 **Slide-Muster:** Cover (dark) → Agenda (light) → Content (weiß/dunkel abwechselnd) → Closing (dark)
 
+## Verbindliche PPT-Hintergrundregeln
+
+- Dark Layouts: `Orbit.png` unten rechts als Background-Element.
+- Light Layouts: gestrichelter Kreis (`KreisgrauWeiss.png`) oben links als Background-Element.
+- Auf dunklen Hintergründen keine blauen Highlight-Backgrounds verwenden — nur weiße Highlights.
+- Asset-Quelle für PPT-Builds: `http://172.16.20.20/catalog/catalog.html`
+
 ## Voraussetzungen
 
 - Claude Code CLI oder Desktop-App

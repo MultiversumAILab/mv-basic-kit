@@ -47,7 +47,7 @@ Details and variables: `lan-collab.md`
 |-------|-------|-----|
 | `--y` | `#F2FF62` | Highlight, badges, active dots, accent |
 | `--c` | `#333333` | Primary text, dark backgrounds |
-| `--o` | `#3C6E89` | Secondary accent, CTAs, takeaway borders |
+| `--o` | `#F26B43` | Secondary accent, CTAs, takeaway borders |
 | `--w` | `#FFFFFF` | White slide background |
 | `--t` | `#3C6E89` | Teal — links, data viz, tertiary |
 | `--s` | `#5D6269` | Steel — secondary text |
@@ -56,6 +56,16 @@ Details and variables: `lan-collab.md`
 | Font | Arial, Helvetica Neue, sans-serif | All text, all weights |
 
 **Rule:** Max ONE `--y` element and ONE `--o` element per slide/screen. Never use `--y` as text background with dark text on slide headers.
+**Dark layout rule (mandatory):** no blue highlight backgrounds on dark slides. Use white highlight styling instead.
+
+## Mandatory PPT Background Assets
+
+- Dark layouts (`.bg-d`, `.bg-g`) must use **Orbit.png** in the lower-right quadrant.
+- Light layouts (`.bg-w`, `.bg-l`, `.bg-y`) must use **gestrichelter Kreis PNG** in the upper-left quadrant.
+- Mandatory asset source for PPT build work: **`http://172.16.20.20/catalog/catalog.html`**
+- Default direct asset URLs:
+  - `http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png`
+  - `http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png`
 
 ## Slide Backgrounds
 
@@ -105,7 +115,7 @@ PNG liegt im Skill-Repo unter `assets/` — plain einbinden, **kein overflow:hid
 
 ### Asset-Katalog (lokales Netzwerk)
 
-Alle Logos, Icons, Fotos: **`http://172.16.20.20/catalog/catalog.html`**
+Alle Logos, Icons, Fotos und Hintergründe: **`http://172.16.20.20/catalog/catalog.html`**
 Direkte Datei-URLs: `http://172.16.20.20/catalog/brand/official/<dateiname>`
 
 Falls ein Logo fehlt oder eine andere Variante gebraucht wird → Katalog öffnen, Datei finden, URL direkt einbetten. Der Katalog wird laufend aktualisiert.

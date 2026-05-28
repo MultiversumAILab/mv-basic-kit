@@ -17,11 +17,20 @@
 }
 ```
 
+### Mandatory Background Assets (PPT / HTML)
+- **Dark layouts (`.bg-d`, `.bg-g`)** must include `Orbit.png` in the **lower-right quadrant** as decorative background element.
+- **Light layouts (`.bg-w`, `.bg-l`, `.bg-y`)** must include the **dashed circle PNG** (`KreisgrauWeiss.png`) in the **upper-left quadrant**.
+- Source for both assets: `http://172.16.20.20/catalog/catalog.html`
+- Default direct URLs:
+  - `http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png`
+  - `http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png`
+
 ### Semantic Usage Rules
 - `--y` → One element per slide max. Badges, active indicators, highlight lines, chapter numbers on dark
 - `--o` → One element per slide max. Takeaway boxes, CTA buttons, chapter dividers
 - `--c` → Body text on light backgrounds. NEVER use as text on `--y` backgrounds (too dark → unreadable)
 - `--t` → Links, charts/graphs, secondary info. Never compete with `--o`
+- **No blue background highlights on dark layouts. Always use white highlight styling on dark backgrounds.**
 
 ### Dark Background Text Hierarchy
 ```
@@ -106,7 +115,7 @@ border: 1px solid rgba(0,0,0,.08);
 ```css
 .al1 { background: rgba(242,255,98,.10); border-left: 3px solid #F2FF62; }  /* Yellow */
 .al2 { background: rgba(242,107,67,.10); border-left: 3px solid #F26B43; }  /* Orange */
-.al3 { background: rgba(60,110,137,.18); border-left: 3px solid #3C6E89; }  /* Teal */
+.al3 { background: rgba(255,255,255,.10); border-left: 3px solid #FFFFFF; }  /* White highlight for dark layouts */
 .al4 { background: rgba(255,255,255,.05); border-left: 3px solid #A4A7AB; } /* Silver */
 padding: 15px 22px; border-radius: 8px;
 ```

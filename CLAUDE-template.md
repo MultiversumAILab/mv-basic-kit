@@ -52,6 +52,12 @@ Der `multiversum-brand` Skill enthält alle CI-Regeln. Bei Content-Erstellung im
 | Teal | `#3C6E89` | Links, Datenvisualisierung |
 | Font | Arial, Helvetica | Alle Texte |
 
+### Verbindliche PPT-Regeln
+- Dark Layouts (`.bg-d`, `.bg-g`): `Orbit.png` unten rechts als Background-Element
+- Light Layouts (`.bg-w`, `.bg-l`, `.bg-y`): gestrichelter Kreis (`KreisgrauWeiss.png`) oben links
+- Auf dunklen Hintergründen keine blauen Highlight-Backgrounds verwenden; immer weißes Highlight
+- Pflicht-Ressource für grafische Elemente: `http://172.16.20.20/catalog/catalog.html`
+
 **Logo-Dateien:** `/Users/ai_lab_team/Documents/Bilder/Logos/`
 - SVG primary: `Logo ohne Hintergrund.svg` (gelb, transparent)
 - Wordmark: `MV ohne slogan.svg`

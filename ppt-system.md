@@ -8,12 +8,14 @@ Every Multiversum presentation is a self-contained HTML file with:
 - Fixed progress bar (top), logo (top-left), slide counter (top-right)
 - PDF export button (bottom-right, shows on hover)
 - Responsive typography via `clamp()`
+- Mandatory background assets: Orbit on dark slides (bottom-right), dashed circle on light slides (top-left)
+- No blue background highlights on dark layouts; white highlight only
 
 ## CSS Foundation (copy into every new presentation)
 
 ```html
 <style>
-:root{--y:#F2FF62;--c:#333333;--o:#3C6E89;--w:#FFFFFF;--s:#5D6269;--sv:#A4A7AB;--l:#F5F5F3;--t:#3C6E89;--f:'Arial','Helvetica Neue',sans-serif}
+:root{--y:#F2FF62;--c:#333333;--o:#F26B43;--w:#FFFFFF;--s:#5D6269;--sv:#A4A7AB;--l:#F5F5F3;--t:#3C6E89;--f:'Arial','Helvetica Neue',sans-serif;--orbit:url('http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png');--dash:url('http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png')}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100vh}
 
@@ -21,8 +23,9 @@ body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100
 #prog{position:fixed;top:0;left:0;height:3px;background:var(--y);width:0;transition:width .5s ease;z-index:1000}
 
 /* Slides */
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
 .slide.active{opacity:1;pointer-events:all}
+.slide>*{position:relative;z-index:1}
 
 /* Backgrounds */
 .bg-d{background:linear-gradient(145deg,#464646 0%,#1c1c1c 100%);color:#fff}
@@ -30,6 +33,10 @@ body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100
 .bg-l{background:#f5f5f3;color:#333}
 .bg-y{background:#F2FF62;color:#333}
 .bg-g{background:linear-gradient(145deg,#404040 0%,#1a1a1a 100%);color:#fff}
+
+/* Mandatory background assets */
+.bg-d::before,.bg-g::before{content:'';position:absolute;right:-140px;bottom:-140px;width:560px;height:560px;background-image:var(--orbit);background-size:contain;background-repeat:no-repeat;background-position:center;opacity:.24;pointer-events:none;z-index:0}
+.bg-w::before,.bg-l::before,.bg-y::before{content:'';position:absolute;left:-120px;top:-120px;width:520px;height:520px;background-image:var(--dash);background-size:contain;background-repeat:no-repeat;background-position:center;opacity:.30;pointer-events:none;z-index:0}
 
 /* Logo (top-left) */
 .logo{position:fixed;top:20px;left:28px;z-index:100;width:38px;height:38px;background:var(--y);border-radius:8px;display:flex;align-items:center;justify-content:center}
@@ -71,7 +78,7 @@ p,li{font-size:clamp(12px,1.3vw,16px);line-height:1.6}
 .al{padding:15px 22px;border-radius:8px;border-left:3px solid transparent}
 .al1{background:rgba(242,255,98,.1);border-left-color:#F2FF62}
 .al2{background:rgba(242,107,67,.1);border-left-color:#F26B43}
-.al3{background:rgba(60,110,137,.18);border-left-color:#3C6E89}
+.al3{background:rgba(255,255,255,.1);border-left-color:#FFFFFF}
 .al4{background:rgba(255,255,255,.05);border-left-color:#A4A7AB}
 
 /* Takeaway boxes */
@@ -124,7 +131,10 @@ Direkt im Cover-Slide-Template verwenden — **kein overflow:hidden, kein clip, 
 
 **Wichtig:** Kein `overflow:hidden` auf Eltern-Containern des Logos. Falls das Slide-Template einen Wrapper mit `overflow:hidden` hat, dem Wordmark-`<div>` explizit `position:relative;z-index:1` geben.
 
-**Weitere Logo-Varianten:** `http://172.16.20.20/catalog/catalog.html` → Abschnitt "Offizielle Logos"
+**Asset-Katalog (verbindliche Ressource für PPT-Builds):** `http://172.16.20.20/catalog/catalog.html`  
+Für Dark/Light-Hintergründe standardmäßig:
+- Orbit (dark): `http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png`
+- Gestrichelter Kreis (light): `http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png`
 
 ## Navigation JavaScript (copy into every presentation)
 
