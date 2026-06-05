@@ -76,3 +76,30 @@ Der Client-Command fragt anschließend:
 
 Vollständige Anleitung inkl. Variablen und Security-Hinweis:
 - `lan-collab.md`
+
+---
+
+## mv-code Push Setup
+
+Ermöglicht das Hochladen lokaler Projekte in mv-code ohne GitHub-Account.
+
+### 1. Token + Name setzen (~/.zshrc)
+
+```bash
+export MV_PUSH_API_KEY="<Token vom Admin erhalten>"
+export MV_CODE_OWNER="dein-name"
+source ~/.zshrc
+```
+
+### 2. Script nutzen
+
+```bash
+cd /dein/projekt
+bash ~/.claude/skills/multiversum-brand/scripts/push.sh
+# oder mit explizitem Namen:
+bash ~/.claude/skills/multiversum-brand/scripts/push.sh "Projektname" --private
+```
+
+### 3. Projekt in mv-code sehen
+
+`https://172.16.20.20/mv-code` → Projekte-Tab
