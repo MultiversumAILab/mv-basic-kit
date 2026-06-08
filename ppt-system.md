@@ -23,9 +23,10 @@ body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100
 #prog{position:fixed;top:0;left:0;height:3px;background:var(--y);width:0;transition:width .5s ease;z-index:1000}
 
 /* Slides */
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
 .slide.active{opacity:1;pointer-events:all}
-.slide>*{position:relative;z-index:1}
+/* Content blocks stay width-constrained AND horizontally centered (never glued to the left edge). */
+.slide>*{position:relative;z-index:1;max-width:1200px;width:100%;margin-left:auto;margin-right:auto}
 
 /* Backgrounds */
 .bg-d{background:linear-gradient(145deg,#464646 0%,#1c1c1c 100%);color:#fff}
