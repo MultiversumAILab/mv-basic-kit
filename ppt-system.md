@@ -25,8 +25,9 @@ body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100
 /* Slides */
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden}
 .slide.active{opacity:1;pointer-events:all}
-/* Content blocks stay width-constrained AND horizontally centered (never glued to the left edge). */
-.slide>*{position:relative;z-index:1;max-width:1200px;width:100%;margin-left:auto;margin-right:auto}
+/* Content blocks stay width-constrained AND horizontally centered (never glued to the left edge).
+   Excludes .ch-big (the big chapter number stays absolutely positioned bottom-right). */
+.slide>*:not(.ch-big){position:relative;z-index:1;max-width:1200px;width:100%;margin-left:auto;margin-right:auto}
 
 /* Backgrounds */
 .bg-d{background:linear-gradient(145deg,#464646 0%,#1c1c1c 100%);color:#fff}
