@@ -56,11 +56,13 @@ Nach Installation aktiviert Claude den Skill automatisch bei CI/Dokument-Anfrage
 ## CI-Schnellreferenz
 
 ```css
---y: #F2FF62  /* Gelb — Highlight */
---o: #F26B43  /* Orange — Akzent */
+--y: #F2FF62  /* Gelb — Highlight (einziger warmer Akzent) */
+--o: #3C6E89  /* Teal — Sekundär-Akzent (KEIN Orange) */
 --c: #333333  /* Dunkel — Text */
 --w: #FFFFFF  /* Weiß */
---t: #3C6E89  /* Teal — Links */
+--t: #3C6E89  /* Teal — Links, Data-Viz */
+--t2:#2D5570  /* Dunkelblau — Tertiär-Akzent, Charts */
+--bl:#8AA8B8  /* Hellblau-grau — Akzente auf Dunkel */
 Font: Arial, Helvetica Neue, sans-serif
 ```
 

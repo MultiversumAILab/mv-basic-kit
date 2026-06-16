@@ -47,15 +47,17 @@ Details and variables: `lan-collab.md`
 |-------|-------|-----|
 | `--y` | `#F2FF62` | Highlight, badges, active dots, accent |
 | `--c` | `#333333` | Primary text, dark backgrounds |
-| `--o` | `#F26B43` | Secondary accent, CTAs, takeaway borders |
+| `--o` | `#3C6E89` | Teal — secondary accent, CTAs, takeaway borders (NO orange) |
 | `--w` | `#FFFFFF` | White slide background |
-| `--t` | `#3C6E89` | Teal — links, data viz, tertiary |
+| `--t` | `#3C6E89` | Teal — links, data viz |
+| `--t2` | `#2D5570` | Deep blue — tertiary accent, stack tiers, charts |
+| `--bl` | `#8AA8B8` | Light blue-grey — accents/captions on dark |
 | `--s` | `#5D6269` | Steel — secondary text |
 | `--sv` | `#A4A7AB` | Silver — muted/captions |
 | `--l` | `#F5F5F3` | Light gray background |
 | Font | Arial, Helvetica Neue, sans-serif | All text, all weights |
 
-**Rule:** Max ONE `--y` element and ONE `--o` element per slide/screen. Never use `--y` as text background with dark text on slide headers.
+**Rule:** Max ONE `--y` element per slide/screen. Never use `--y` as text background with dark text on slide headers. **Never use `#F26B43` (orange) — it is not in the CI; teal/blue/grey are the secondary palette.**
 **Dark layout rule (mandatory):** no blue highlight backgrounds on dark slides. Use white highlight styling instead.
 
 ## Mandatory PPT Background Assets
@@ -157,6 +159,7 @@ Full reference: `docx-rules.md`
 
 ## Supporting References
 
+- `coding-guidelines.md` — General coding behavior (Karpathy guidelines: think-before-coding, simplicity, surgical changes, goal-driven). Always-on; mirrored into `CLAUDE-template.md` / `AGENTS-template.md`.
 - `ci.md` — Full CI specification (typography, spacing, all components)
 - `ppt-system.md` — HTML slide CSS framework + component library
 - `docx-rules.md` — DOCX generator docs, all styles, logo placement, callout patterns

@@ -163,7 +163,7 @@ def add_callout(doc, text):
 ## Compliance Watermark (Vertraulich)
 
 Für Dokumente der Klassifizierung `vertraulich` oder `streng vertraulich`:
-- Wasserzeichen: `VERTRAULICH` diagonal, Schriftgröße 60pt, Farbe `rgba(242,107,67,0.15)`
+- Wasserzeichen: `VERTRAULICH` diagonal, Schriftgröße 60pt, Farbe `rgba(51,51,51,0.13)` (Charcoal — kein Orange)
 - TISAX-Marker in Footer-Mitte: `[VERTRAULICH]` / `[INTERN]`
 - Der Generator setzt den Footer-Marker automatisch anhand der `--classification`
 

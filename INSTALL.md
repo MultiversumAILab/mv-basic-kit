@@ -31,11 +31,22 @@ git clone https://github.com/MultiversumAILab/mv-basic-kit \
 
 ---
 
-## CLAUDE.md für neues Projekt anlegen
+## Kontextdatei für neues Projekt anlegen (Claude / Codex / Cursor)
+
+Die Coding-Guidelines (Karpathy) + CI/DSGVO-Hinweise sind in den Templates verankert und werden so
+bei JEDER Aufgabe geladen (nicht nur bei Brand-Tasks):
 
 ```bash
+# Claude Code
 cp ~/.claude/skills/multiversum-brand/CLAUDE-template.md ./CLAUDE.md
+
+# Codex / Cursor (beide lesen AGENTS.md)
+cp ~/.claude/skills/multiversum-brand/AGENTS-template.md ./AGENTS.md
+# Ältere Cursor-Versionen zusätzlich:
+cp ~/.claude/skills/multiversum-brand/AGENTS-template.md ./.cursorrules
 ```
+
+Volle Coding-Guidelines-Referenz: `coding-guidelines.md` im Skill.
 
 ---
 
@@ -48,7 +59,9 @@ cp ~/.claude/skills/multiversum-brand/CLAUDE-template.md ./CLAUDE.md
 | `ppt-system.md` | HTML-Slide-Framework, Templates, Navigation JS |
 | `docx-rules.md` | DOCX-Regeln, Logo oben rechts, Header/Footer |
 | `compliance.md` | DSGVO-Checklisten, TISAX-Klassifikation |
-| `CLAUDE-template.md` | Default CLAUDE.md für neue Projekte |
+| `coding-guidelines.md` | Coding-Verhalten (Karpathy): think-before-coding, simplicity, surgical, goal-driven |
+| `CLAUDE-template.md` | Default CLAUDE.md für neue Projekte (Claude) |
+| `AGENTS-template.md` | Default AGENTS.md für neue Projekte (Codex / Cursor) |
 
 ## Verwendung nach Installation
 

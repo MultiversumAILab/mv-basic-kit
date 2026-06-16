@@ -5,17 +5,23 @@
 ### Primary Palette (CSS Variables)
 ```css
 :root {
-  --y:  #F2FF62;  /* Yellow-Green: highlight, badges, accent bars */
+  --y:  #F2FF62;  /* Yellow-Green: highlight, badges, accent bars (primary accent) */
   --c:  #333333;  /* Charcoal: primary text, dark-bg bg */
-  --o:  #F26B43;  /* Orange: CTAs, takeaway borders, secondary accent */
+  --o:  #3C6E89;  /* Teal: CTAs, takeaway borders, secondary accent (NO orange — CI has none) */
   --w:  #FFFFFF;  /* White: slide bg, body text on dark */
   --s:  #5D6269;  /* Steel: secondary text, subtitles */
   --sv: #A4A7AB;  /* Silver: muted text, captions, placeholders */
   --l:  #F5F5F3;  /* Light: off-white bg, light slides */
-  --t:  #3C6E89;  /* Teal: links, data viz, tertiary accent */
+  --t:  #3C6E89;  /* Teal: links, data viz */
+  --t2: #2D5570;  /* Deep blue: tertiary accent, architecture-stack tier, charts */
+  --bl: #8AA8B8;  /* Light blue-grey: accents/captions on dark backgrounds */
   --f:  'Arial','Helvetica Neue',sans-serif;
 }
 ```
+
+> **No orange.** The Multiversum CI uses yellow-green `#F2FF62` as the only warm accent. The
+> secondary palette is teal/blue/grey (`#3C6E89`, `#2D5570`, `#8AA8B8`, `#5D6269`, `#A4A7AB`), per the
+> asset catalog at `http://172.16.20.20/catalog/catalog.html`. `#F26B43` must never appear.
 
 ### Mandatory Background Assets (PPT / HTML)
 - **Dark layouts (`.bg-d`, `.bg-g`)** must include `Orbit.png` in the **lower-right quadrant** as decorative background element.
@@ -27,10 +33,11 @@
 
 ### Semantic Usage Rules
 - `--y` → One element per slide max. Badges, active indicators, highlight lines, chapter numbers on dark
-- `--o` → One element per slide max. Takeaway boxes, CTA buttons, chapter dividers
+- `--o` (teal) → Takeaway boxes, CTA buttons, chapter dividers, secondary accent
 - `--c` → Body text on light backgrounds. NEVER use as text on `--y` backgrounds (too dark → unreadable)
-- `--t` → Links, charts/graphs, secondary info. Never compete with `--o`
-- **No blue background highlights on dark layouts. Always use white highlight styling on dark backgrounds.**
+- `--t` (teal) → Links, charts/graphs, secondary info · `--t2` (deep blue) / `--bl` (light blue-grey) → chart series, stack tiers, variety
+- **No solid-colour background fills as highlights on dark layouts. Use white (or `--bl`) highlight styling on dark backgrounds.**
+- **Never use `#F26B43` (orange) — it is not part of the CI.**
 
 ### Dark Background Text Hierarchy
 ```
@@ -39,7 +46,7 @@ Secondary:  rgba(255,255,255,.65)
 Muted:      rgba(255,255,255,.45)
 Very muted: rgba(255,255,255,.28)
 Accent:     #F2FF62 (--y)
-Sub-accent: #F26B43 (--o)
+Sub-accent: #8AA8B8 (--bl)  /* light blue-grey reads clearly on dark; teal --o for borders/fills */
 ```
 
 ### Light Background Text Hierarchy
@@ -114,7 +121,7 @@ border: 1px solid rgba(0,0,0,.08);
 ### Architecture Stack Items (left-border color system)
 ```css
 .al1 { background: rgba(242,255,98,.10); border-left: 3px solid #F2FF62; }  /* Yellow */
-.al2 { background: rgba(242,107,67,.10); border-left: 3px solid #F26B43; }  /* Orange */
+.al2 { background: rgba(45,85,112,.12);  border-left: 3px solid #2D5570; }  /* Deep blue */
 .al3 { background: rgba(255,255,255,.10); border-left: 3px solid #FFFFFF; }  /* White highlight for dark layouts */
 .al4 { background: rgba(255,255,255,.05); border-left: 3px solid #A4A7AB; } /* Silver */
 padding: 15px 22px; border-radius: 8px;
@@ -123,7 +130,7 @@ padding: 15px 22px; border-radius: 8px;
 ### Takeaway/Highlight Boxes
 ```css
 .taw-y { border-left: 4px solid #F2FF62; background: rgba(242,255,98,.07); }
-.taw-o { border-left: 4px solid #F26B43; background: rgba(242,107,67,.07); }
+.taw-o { border-left: 4px solid #3C6E89; background: rgba(60,110,137,.10); }
 border-radius: 0 8px 8px 0; padding: 18px 24px; font-style: italic;
 ```
 

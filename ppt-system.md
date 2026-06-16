@@ -3,8 +3,9 @@
 ## Architecture
 
 Every Multiversum presentation is a self-contained HTML file with:
-- CSS variable design system (7 color tokens)
+- CSS variable design system (9 color tokens — secondary accent is TEAL `--o:#3C6E89`; NO orange)
 - Full-screen slides (100vw × 100vh) with keyboard/arrow navigation
+- Exactly ONE global pagination-dots container, placed before the slides — never duplicated per slide
 - Fixed progress bar (top), logo (top-left), slide counter (top-right)
 - PDF export button (bottom-right, shows on hover)
 - Responsive typography via `clamp()`
@@ -15,7 +16,7 @@ Every Multiversum presentation is a self-contained HTML file with:
 
 ```html
 <style>
-:root{--y:#F2FF62;--c:#333333;--o:#F26B43;--w:#FFFFFF;--s:#5D6269;--sv:#A4A7AB;--l:#F5F5F3;--t:#3C6E89;--f:'Arial','Helvetica Neue',sans-serif;--orbit:url('http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png');--dash:url('http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png')}
+:root{--y:#F2FF62;--c:#333333;--o:#3C6E89;--w:#FFFFFF;--s:#5D6269;--sv:#A4A7AB;--l:#F5F5F3;--t:#3C6E89;--t2:#2D5570;--bl:#8AA8B8;--f:'Arial','Helvetica Neue',sans-serif;--orbit:url('http://172.16.20.20/catalog/uploads/20260528T152331_Orbit.png');--dash:url('http://172.16.20.20/catalog/uploads/20260528T173500_KreisgrauWeiss.png')}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100vh}
 
@@ -43,11 +44,13 @@ body{font-family:var(--f);background:#111;overflow:hidden;width:100vw;height:100
 /* Logo (top-left) */
 .logo{position:fixed;top:20px;left:28px;z-index:100;width:38px;height:38px;background:var(--y);border-radius:8px;display:flex;align-items:center;justify-content:center}
 
-/* Nav dots */
+/* Nav dots — EXACTLY ONE global container before the slides. NEVER place .dots inside a <section>. */
 .dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:100}
 .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:.3s}
 .dot.on{width:22px;border-radius:3px;background:var(--y)}
 .dot.light{background:rgba(0,0,0,.18)}.dot.light.on{background:#333}
+/* Safeguard: a stray per-slide dots container must never render in the slide flow. */
+.slide .dots{display:none!important}
 
 /* Arrow nav */
 .arr{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.3s;z-index:100}
@@ -79,14 +82,14 @@ p,li{font-size:clamp(12px,1.3vw,16px);line-height:1.6}
 /* Architecture stack */
 .al{padding:15px 22px;border-radius:8px;border-left:3px solid transparent}
 .al1{background:rgba(242,255,98,.1);border-left-color:#F2FF62}
-.al2{background:rgba(242,107,67,.1);border-left-color:#F26B43}
+.al2{background:rgba(45,85,112,.12);border-left-color:#2D5570}
 .al3{background:rgba(255,255,255,.1);border-left-color:#FFFFFF}
 .al4{background:rgba(255,255,255,.05);border-left-color:#A4A7AB}
 
 /* Takeaway boxes */
 .taw{padding:18px 24px;border-radius:0 8px 8px 0;font-style:italic;border-left:4px solid}
 .taw-y{border-left-color:#F2FF62;background:rgba(242,255,98,.07);color:#F2FF62}
-.taw-o{border-left-color:#F26B43;background:rgba(242,107,67,.07);color:#F26B43}
+.taw-o{border-left-color:#3C6E89;background:rgba(60,110,137,.10);color:#3C6E89}
 
 /* Chapter number watermark */
 .ch-big{position:absolute;right:56px;bottom:36px;font-size:clamp(100px,18vw,220px);font-weight:900;opacity:.12;line-height:.8;letter-spacing:-6px;color:var(--y);pointer-events:none}

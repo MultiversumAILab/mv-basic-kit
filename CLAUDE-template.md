@@ -45,12 +45,15 @@ Der `multiversum-brand` Skill enthält alle CI-Regeln. Bei Content-Erstellung im
 ### CI-Kern
 | Token | Farbe | Verwendung |
 |-------|-------|-----------|
-| Gelb | `#F2FF62` | Highlight, Badges, Akzente |
-| Orange | `#F26B43` | CTAs, sekundärer Akzent |
+| Gelb | `#F2FF62` | Highlight, Badges, Akzente (einziger warmer Akzent) |
+| Teal | `#3C6E89` | CTAs, sekundärer Akzent, Links, Datenvisualisierung |
+| Dunkelblau | `#2D5570` | Tertiär-Akzent, Stack-Tiers, Charts |
+| Hellblau-grau | `#8AA8B8` | Akzente/Captions auf dunklem Hintergrund |
 | Dunkel | `#333333` | Text, dunkle Hintergründe |
 | Weiß | `#FFFFFF` | Helle Hintergründe |
-| Teal | `#3C6E89` | Links, Datenvisualisierung |
 | Font | Arial, Helvetica | Alle Texte |
+
+> **Kein Orange.** `#F26B43` ist nicht Teil der CI und darf nirgends erscheinen — Sekundärpalette ist Teal/Blau/Grau.
 
 ### Verbindliche PPT-Regeln
 - Dark Layouts (`.bg-d`, `.bg-g`): `Orbit.png` unten rechts als Background-Element
@@ -140,6 +143,25 @@ Business Expert Skills laden via WebFetch:
 **Security-Scan PFLICHT** vor jedem WebFetch-Skill-Import:
 > "Bitte führe zuerst den Security-Scanner aus: `python3 -m security.skill_scanner --check-url [URL]`"
 > Erst nach PASS weitermachen.
+
+---
+
+## 8. CODING-VERHALTEN (Karpathy-Leitlinien)
+
+Allgemeines Coding-Verhalten, gilt bei JEDER Code-Aufgabe (ergänzt Abschnitt 2). Volle Fassung:
+`coding-guidelines.md` im `multiversum-brand` Skill. Quelle: Andrej-Karpathy-Coding-Guidelines via
+`multica-ai/andrej-karpathy-skills`.
+
+1. **Erst denken, dann coden:** Annahmen explizit nennen; bei Unklarheit STOPP und nachfragen; mehrere
+   Interpretationen offenlegen statt still eine zu wählen; einfachere Wege ansprechen.
+2. **Simplicity First:** minimaler Code, der das Problem löst; nichts Spekulatives (keine ungefragten
+   Features/Abstraktionen/„Flexibilität"/Error-Handling für unmögliche Fälle). „Würde ein Senior das
+   überkompliziert nennen?" → vereinfachen.
+3. **Chirurgische Änderungen:** nur anfassen, was nötig ist; angrenzenden Code nicht „verbessern",
+   umformatieren oder refactoren; bestehenden Stil treffen; nur selbst erzeugte Orphans entfernen,
+   vorbestehenden toten Code nur erwähnen. Jede geänderte Zeile führt direkt auf den Auftrag zurück.
+4. **Zielgetrieben ausführen:** Aufgaben in verifizierbare Ziele übersetzen (Tests/Checks), kurzen
+   Schritt-Plan mit Verifikation, bis grün loopen.
 
 ---
 
