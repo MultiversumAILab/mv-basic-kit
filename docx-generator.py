@@ -13,7 +13,8 @@ Generates CI-compliant Word documents (.docx) with:
 Usage:
     python3 docx-generator.py --out "Mein Dokument.docx" --title "ISMS Richtlinie"
     python3 docx-generator.py --out output.docx --title "Titel" --subtitle "Untertitel" \
-        --author "Max Mustermann" --classification "intern"
+        --responsible "Max Mustermann" --classification "intern"
+    # Datei-Eigenschaft 'Autor' wird immer auf 'Multiversum GmbH' gesetzt.
 
 Or import and use the factory:
     from docx_generator import create_mv_document
@@ -37,6 +38,14 @@ from docx.shared import Cm, Pt, RGBColor, Twips
 # ── Logo path (bundled with skill, always available) ──────────────────────────
 SKILL_DIR = Path(__file__).parent
 LOGO_PATH = SKILL_DIR / "assets" / "Logo_MV_MVW.png"
+
+# ── Mandatory file-property author (Multiversum GmbH) ─────────────────────────
+# Every Office document generated here MUST list "Multiversum GmbH" as the author
+# in its file properties (core:author / core:last_modified_by). This is a fixed
+# global rule — see SKILL.md and the global AGENTS.md. The --author CLI flag may
+# still set an individual "Verfasser" for the Dokumentensteckbrief, but the file
+# property author is always the company.
+MV_AUTHOR = "Multiversum GmbH"
 
 # ── CI Color palette ──────────────────────────────────────────────────────────
 C_TEXT    = RGBColor(0x33, 0x33, 0x33)   # #333333 — primary text
@@ -572,6 +581,13 @@ def create_mv_document(
     doc = Document()
     _define_styles(doc)
 
+    # ── File properties: Autor immer Multiversum GmbH (globale Regel) ────────
+    cp = doc.core_properties
+    cp.author = MV_AUTHOR
+    cp.last_modified_by = MV_AUTHOR
+    if title:
+        cp.title = title
+
     section = doc.sections[0]
     _configure_page(section)
     _build_header(section, title)
@@ -660,7 +676,9 @@ def main():
     parser.add_argument("--out", default="Multiversum_Dokument.docx", help="Output file path")
     parser.add_argument("--title", default="Dokumententitel", help="Document title")
     parser.add_argument("--subtitle", default="", help="Subtitle / description")
-    parser.add_argument("--author", default="", help="Author name")
+    parser.add_argument("--author", default=MV_AUTHOR,
+                        help="Verfasser (Dokumentensteckbrief). Die Datei-Eigenschaft "
+                             "'Autor' wird immer auf 'Multiversum GmbH' gesetzt.")
     parser.add_argument("--classification", default="intern",
                         choices=["öffentlich", "intern", "vertraulich", "streng vertraulich"])
     parser.add_argument("--valid-from", default=date.today().strftime("%d.%m.%Y"))

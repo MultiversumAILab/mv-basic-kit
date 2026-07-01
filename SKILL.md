@@ -41,6 +41,19 @@ Details and variables: `lan-collab.md`
 
 **Mandatory on every content task:** Load `compliance.md` and apply data classification before sharing any document.
 
+## Datei-Eigenschaften — Autor = Multiversum GmbH (verbindlich)
+
+**Für JEDES hier erzeugte Office-Dokument** (`.docx`, `.doc`, `.pptx`, `.ppt`, `.xlsx`, `.xls` und alle weiteren Office-Formate) MUSS in den Datei-Eigenschaften als **Autor `Multiversum GmbH`** eingetragen sein — global und für alle User, ohne Ausnahme. Der verantwortliche Bearbeiter gehört in das Feld „Verantwortlich/Verfasser" (Dokumentensteckbrief, `--responsible`), niemals in die Datei-Eigenschaft „Autor".
+
+Konkret beim Erzeugen:
+- **DOCX** (`docx-generator.py`): passiert automatisch — `doc.core_properties.author` und `last_modified_by` werden immer auf `Multiversum GmbH` gesetzt. `--author` ist nur der Verfasser im Steckbrief.
+- **PPTX** (`python-pptx`): `prs.core_properties.author = "Multiversum GmbH"` sowie `last_modified_by = "Multiversum GmbH"` setzen.
+- **XLSX** (`openpyxl`): `wb.properties.creator = "Multiversum GmbH"` (und ggf. `lastModifiedBy`) setzen.
+- **DOC / PPT / XLS** (Legacy): vor dem Speichern in `docProps/core.xml` bzw. den SummaryInformation-Stream den Autor auf `Multiversum GmbH` setzen; bei Konvertierung über LibreOffice/Pandoc `-core:author`/`--reference-doc` entsprechend vorbelegen.
+- Bei Fremd-Generatoren (z. B. pandoc, LibreOffice headless) den Autor-Parameter explizit auf `Multiversum GmbH` setzen.
+
+Vor der Auslieferung immer prüfen: Datei-Eigenschaften → Autor == `Multiversum GmbH`.
+
 ## Core CI Quick Reference
 
 | Token | Value | Use |
@@ -157,6 +170,49 @@ doc.save("output.docx")
 
 Full reference: `docx-rules.md`
 
+## PPTX Presentation Generation — Quick Guide
+
+**For any native PowerPoint (.pptx) request:** Use the bundled generator. Never build a deck from scratch.
+(The HTML slide system in `ppt-system.md` remains the default for web/PDF decks; use `pptx-generator.py` when the deliverable must be an editable `.pptx`.)
+
+```bash
+python3 ~/.claude/skills/multiversum-brand/pptx-generator.py \
+  --out "YYYY-MM-DD_[Kunde]_[Typ].pptx" \
+  --title "Titel" --subtitle "Untertitel" \
+  --client "Kunde" --classification intern \
+  --responsible "Name" --sample
+```
+
+**What gets generated automatically:**
+- Datei-Eigenschaft **Autor = Multiversum GmbH** (`core_properties.author` + `last_modified_by`, verbindlich)
+- 16:9 widescreen, Arial, full Multiversum color palette (kein Orange)
+- 5 Hintergrund-Layouts wie das HTML-System: bg-d / bg-g (Dark-Gradient), bg-w / bg-l / bg-y (Light)
+- M-Symbol+Wordmark-Logo oben links auf jeder Inhaltsfolie, gelber Wordmark prominent auf dem Deckblatt
+- Footer: Multiversum GmbH · Hamburg | [KLASSIFIZIERUNG] | Folie/Gesamt
+- Wiederverwendbare Folien-Bausteine: Cover, Agenda, Section-Divider, Two-Column, Architecture-Stack, Stats, Takeaway, Text
+- `--responsible` → Verfasser landet in den Metadaten (Comments), nie in der Datei-Eigenschaft „Autor"
+
+**Slide builders (for programmatic use):**
+```python
+import sys; sys.path.insert(0, str(Path.home() / ".claude/skills/multiversum-brand"))
+from pptx_generator import (create_mv_presentation, add_cover_slide,
+    add_agenda_slide, add_two_col_slide, add_stack_slide,
+    add_stats_slide, add_takeaway_slide, add_section_divider, add_text_slide)
+
+prs = create_mv_presentation(title="Titel", classification="intern")
+add_section_divider(prs, chapter_no=1, title="Ausgangslage", index=2, total=4)
+add_two_col_slide(prs, title="Lösung", eyebrow="APPROACH",
+                  left_title="Links", left_body="Text",
+                  right_title="Rechts", right_body="Text",
+                  dark=False, index=3, total=4)
+add_takeaway_slide(prs, title="Fazit.", body="CTA-Text.", index=4, total=4)
+prs.save("output.pptx")
+```
+
+**After generation:** User öffnet in PowerPoint → Inhalte prüfen → ggf. Folien ergänzen. Logo + Footer sind fest verankert.
+
+Full reference: `ppt-system.md` (CI tokens, slide layouts, background assets)
+
 ## Supporting References
 
 - `coding-guidelines.md` — General coding behavior (Karpathy guidelines: think-before-coding, simplicity, surgical changes, goal-driven). Always-on; mirrored into `CLAUDE-template.md` / `AGENTS-template.md`.
@@ -164,6 +220,7 @@ Full reference: `docx-rules.md`
 - `ppt-system.md` — HTML slide CSS framework + component library
 - `docx-rules.md` — DOCX generator docs, all styles, logo placement, callout patterns
 - `docx-generator.py` — Python generator script (bundled, no install needed beyond python-docx)
+- `pptx-generator.py` — Python PPTX generator script (bundled, no install needed beyond python-pptx; editable `.pptx` decks, same CI as `ppt-system.md`)
 - `compliance.md` — DSGVO + TISAX data classification + mandatory checklists
 - `assets/Logo_MV_MVW.png` — M Symbol + Wordmark Kombination (1200×238px, schwarz, eingebettet)
 - `lan-collab.md` — LAN collaboration workflow (Mac Mini host + colleague clients)
@@ -178,6 +235,7 @@ Full reference: `docx-rules.md`
    - DOCX → run `docx-generator.py` (see above + `docx-rules.md`)
 3. **Apply CI** → use tokens from this file and `ci.md`
 4. **Verify** → logo top-right sichtbar, Steckbrief ausgefüllt, TOC aktualisiert (F9), Klassifizierung im Footer
+5. **PPTX** → `pptx-generator.py` für native `.pptx`-Decks; Datei-Eigenschaft „Autor" = Multiversum GmbH prüfen
 
 ## LAN Editing Mode (Mac Mini)
 
